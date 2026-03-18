@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register Form</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #eee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            width: 350px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        input, textarea {
+            width: 90%;
+            padding: 10px;
+            margin: 5px 0 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        .success {
+            border: 2px solid green;
+        }
+
+        .error {
+            border: 2px solid red;
+        }
+
+        small {
+            font-size: 12px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .charCount {
+            font-size: 12px;
+            color: gray;
+        }
+
+        .eye {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Register Form</h2>
+    <p>Create your account to continue</p>
+
+    <form onsubmit="return validateForm()">
+
+        <label>Name</label>
+        <input type="text" id="name">
+
+        <label>Email</label>
+        <input type="email" id="email">
+
+        <label>Password</label>
+        <div style="position: relative;">
+            <input type="password" id="password">
+            <span class="eye" onclick="togglePassword(this)">👁️</span>
+        </div>
+        <small id="passMsg"></small>
+
+        <label>Message</label>
+        <textarea id="message" maxlength="200" oninput="countChars()"></textarea>
+        <div class="charCount" id="charCount">0/200 characters</div>
+
+        <button type="submit">Create Account</button>
+
+    </form>
+</div>
+
+<script>
+function validateForm() {
+
+    let name = document.getElementById("name");
+    let email = document.getElementById("email");
+    let password = document.getElementById("password");
+
+    let valid = true;
+
+    // Name
+    if (name.value.trim() === "") {
+        name.classList.add("error");
+        valid = false;
+    } else {
+        name.classList.remove("error");
+        name.classList.add("success");
+    }
+
+    // Email
+    if (!email.value.includes("@")) {
+        email.classList.add("error");
+        valid = false;
+    } else {
+        email.classList.remove("error");
+        email.classList.add("success");
+    }
+
+    // Password
+    let passMsg = document.getElementById("passMsg");
+
+    if (password.value.length < 6) {
+        password.classList.add("error");
+        passMsg.innerText = "Minimum 6 characters";
+        passMsg.style.color = "red";
+        valid = false;
+    } else {
+        password.classList.remove("error");
+        password.classList.add("success");
+        passMsg.innerText = "Strong enough";
+        passMsg.style.color = "green";
+    }
+
+    // Alert
+    if (valid) {
+        alert("Account Created Successfully ✅");
+    } else {
+        alert("Please fill all fields correctly ❌");
+    }
+
+    return valid;
+}
+
+// Character Count
+function countChars() {
+    let message = document.getElementById("message");
+    let count = message.value.length;
+
+    document.getElementById("charCount").innerText =
+        count + "/200 characters";
+
+    if (count >= 200) {
+        document.getElementById("charCount").style.color = "red";
+    } else {
+        document.getElementById("charCount").style.color = "gray";
+    }
+}
+
+// Show/Hide Password
+function togglePassword(el) {
+    let pass = document.getElementById("password");
+
+    if (pass.type === "password") {
+        pass.type = "text";
+        el.innerText = "🙈";
+    } else {
+        pass.type = "password";
+        el.innerText = "👁️";
+    }
+}
+</script>
+
+</body>
+</html>
